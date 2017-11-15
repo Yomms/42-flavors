@@ -10,9 +10,9 @@ var num = function getRandomIntInclusive(min, max) {
   	var num1 = num(1, 20)
   	var rng = Math.floor(num1); 
   	var randomNumber = document.createTextNode(rng);
- 	var span = document.createElement("span");
- 	span.appendChild(randomNumber);
- 	span.className = 'quantity'
+ 	  var span = document.createElement("span");
+ 	  span.appendChild(randomNumber);
+ 	  span.className = 'quantity'
 
   	//var container = document.getElementById("container");
   	//var flavor = document.getElementsByClassName("flavor")[i];
@@ -101,18 +101,86 @@ function findCheapFlavors(flavors, threshold) {
  * for each of the given flavors. */
 function populateOptions(flavors) {
   // TODO
+  var selectTag = document.getElementsByTagName("select");
+  var select = selectTag[0];
+  select.remove(0)
+
+  function optionsCreation(element) {
+    var name = element.name;
+    var option = document.createElement("option");
+    option.innerHTML = name;
+    option.value = name;
+    select.add(option);
+  }
+  arrayOfFlavors.map(optionsCreation);
 }
 
 /* Processes orders for the given set of flavors. When a valid order is made,
  * decrements the quantity of the associated flavor. */
 function processOrders(flavors) {
   // TODO
+
+  // the form tag
+  var form1 = document.getElementsByTagName("form");
+  var form = form1[0];
+
+  // event listener for clicking "finalize order"
+  form.addEventListener("submit", submitFunction);
+
+  // function for what submitting does
+  function submitFunction() {
+
+  // the selected dropdown flavor
+  var select1 = document.getElementsByTagName("select");
+  var select = select1[0];
+  var dropdown = select.value;
+
+  // the input amount
+  var inputTagOrder = document.getElementsByTagName("input");
+  var orderAmount = inputTagOrder[0].value;
+
+    for(i = 0; i < 42; i++){
+      // the name of the flavor
+      var description = document.getElementsByClassName("description")[i];
+      var nameTag = description.getElementsByTagName("h2")[0];
+      var nameOfFlavor = nameTag.innerHTML;
+
+      // the quantity of the flavor
+      var meta = document.getElementsByClassName("meta")[i];
+      var quantityTag = meta.getElementsByClassName("quantity")[0];
+      var quantityOfFlavor = quantityTag.innerHTML;
+      var quantityOfFlavorNumber = parseFloat(quantityOfFlavor);
+      if(dropdown === nameOfFlavor){
+        var newAmount = quantityOfFlavorNumber - orderAmount;
+        if(newAmount >= 0){
+          quantityTag.innerHTML = newAmount;
+          inputTagOrder[0].value = " ";
+        }
+          inputTagOrder[0].value = " ";
+      }
+    }
+    event.preventDefault();
+  }
+
+
 }
 
 /* Highlights flavors when clicked to make a simple favoriting system. */
 function highlightFlavors(flavors) {
   // TODO
-}
+  var flavor = 0;
+  var flavorTag = document.getElementsByClassName("flavor");
+
+  for(var i = 0; i < 42; i++) {
+    flavor = flavorTag[i];
+
+    flavor.onclick = function(element) {
+    this.classList.toggle("highlighted");
+    console.log(element);
+    }
+  }  
+} 
+
 
 
 /***************************************************************************/
